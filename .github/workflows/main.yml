@@ -1,0 +1,31 @@
+name: Sync with Upstream
+
+on:
+  push:
+    branches:
+      -  JMAKE5611 # 替换为你的主分支名
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        repository: MetaMask/eth-phishing-detect  # 替换为上游仓库的用户名和仓库名
+        ref: MetaMask  # 替换为上游仓库的分支名
+        
+    - name: Configure Git
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "GitHub Actions"
+        
+    - name: Fetch upstream
+      run: git fetch origin
+
+    - name: Merge upstream changes
+      run: git merge JMAKE5611/eth-phishing-detect --no-edit  # 替换为正确的分支名
+
+    - name: Push changes to fork
+      run: git push origin JMAKE5611  # 替换为你的主分支名
